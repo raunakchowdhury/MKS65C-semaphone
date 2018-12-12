@@ -1,15 +1,6 @@
-all: main.o write.o setup.o
-	gcc main.o write.o
-	gcc -o setup setup.o
-
-main.o: main.c
-	gcc -c -g main.c
-
-setup.o: setup.c setup.h
-	gcc -c -g setup.c
-
-write.o: write.c write.h
+all: write.c setup.c
 	gcc -c -g write.c
+	gcc setup.c -o setup
 
 setup:
 	./setup.out $(args)
