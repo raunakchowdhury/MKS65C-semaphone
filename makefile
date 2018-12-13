@@ -1,6 +1,6 @@
 all: write.c setup.c
-	gcc -c -g write.c
-	gcc setup.c -o setup
+	gcc -g write.c
+	gcc setup.c -o setup.out
 
 setup:
 	./setup.out $(args)

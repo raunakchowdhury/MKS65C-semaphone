@@ -36,6 +36,9 @@
 *.x86_64
 *.hex
 
+# Story Files
+story.txt
+
 # Debug files
 *.dSYM/
 *.su
