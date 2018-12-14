@@ -11,13 +11,13 @@
 
 # define KEY 0xFAD
 
-// UNCCOMENT WHEN ON LINUX
-// union semun{
-//   int val; // used for SETVAL
-//   struct semid_ds *buf; // used for IPC_STAT and IPC_SET
-//   unsigned short *array; // used for SETALL
-//   struct seminfo *__buf; // buffer for IPC_INFO
-// };
+/* UNCOMMENT WHEN ON LINUX */
+union semun{
+  int val; // used for SETVAL
+  struct semid_ds *buf; // used for IPC_STAT and IPC_SET
+  unsigned short *array; // used for SETALL
+  struct seminfo *__buf; // buffer for IPC_INFO
+};
 
 int main(int argc, char const *argv[]) {
   /* code */
