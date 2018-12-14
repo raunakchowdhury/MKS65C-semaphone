@@ -51,13 +51,13 @@ int main(int argc, char const *argv[]) {
       printf("Semaphore Get Error: %s\n", strerror(errno));
       semaphore = semget(KEY, 1, 0);
       int v = semctl(semaphore, 0, GETVAL, 0);
-      printf("semctl returned: %d\n", v);
+      /* printf("semctl returned: %d\n", v); */
     }
     else {
       union semun data;
       data.val = 1;
       int r = semctl(semaphore, 0, SETVAL, data);
-      printf("semctl returned: %d\n", r);
+      /* printf("semctl returned: %d\n", r); */
     }
   }
   // view mode
