@@ -21,14 +21,19 @@
 
 int main(int argc, char const *argv[]) {
   /* code */
-  const char * command = argv[1];
+  const char * command;
+  if (!argv[1]){
+    printf("No arg inputted! Program exiting.\n");
+    exit(0);
+  }
+  command = argv[1];
   int file;
   // printf("argc: %d command: %s\n", argc, command);
   // printf("strcmp(command, \"-v\"): %d\n", strcmp(command, "-v"));
 
   // create mode
   if (!strcmp(command, "-c")){
-    int shmid = shmget(KEY, 200, 0644 | IPC_CREAT);
+    int shmid = shmget(KEY, 4, 0644 | IPC_CREAT);
     // if connection fails
     if (shmid == -1){
       printf("Shared Memory Get Error: %s\n", strerror(errno));
@@ -40,10 +45,19 @@ int main(int argc, char const *argv[]) {
       printf("File Error: %s\n", strerror(errno));
     }
 
-    int semaphore = semget(KEY, 1, IPC_CREAT);
+    int semaphore = semget(KEY, 1, IPC_CREAT | 0644);
     // if connection fails
     if (semaphore == -1){
       printf("Semaphore Get Error: %s\n", strerror(errno));
+      semaphore = semget(KEY, 1, 0);
+      int v = semctl(semaphore, 0, GETVAL, 0);
+      printf("semctl returned: %d\n", v);
+    }
+    else {
+      union semun data;
+      data.val = 1;
+      int r = semctl(semaphore, 0, SETVAL, data);
+      printf("semctl returned: %d\n", r);
     }
   }
   // view mode
@@ -66,7 +80,7 @@ int main(int argc, char const *argv[]) {
   }
   // remove mode
   else if (!strcmp(command, "-r")){
-    int shmid = shmget(KEY, 200, 0644);
+    int shmid = shmget(KEY, 4, 0644);
     // if connection fails
     if (shmid == -1){
       printf("Shared Memory Get Error: %s\n", strerror(errno));
@@ -88,7 +102,7 @@ int main(int argc, char const *argv[]) {
       printf("Error! Unable to delete story or story does not exist!\n");
     }
 
-    int semaphore = semget(KEY, 1, IPC_CREAT);
+    int semaphore = semget(KEY, 1, IPC_CREAT | 0644);
     // if connection fails
     if (semaphore == -1){
       printf("Semaphore Get Error: %s\n", strerror(errno));
